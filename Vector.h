@@ -19,6 +19,7 @@ public:
 	int& at(size_t idx);
 	void resize();
 	void print();
+	void push_back(int val);
 };
 
 #endif

@@ -9,6 +9,8 @@ int main() {
 	v1.print();
 	v2.print();
 	v3.print();
+	v3.push_back(4);
+	v3.print();
 
 	return 0;
 }

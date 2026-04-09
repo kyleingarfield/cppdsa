@@ -1,18 +1,18 @@
 #include "Vector.h"
 
 Vector::Vector() {
-	size = 0;
+	size, capacity = 0;
 	arr = nullptr;
 }
 
 Vector::Vector(size_t init_size) {
-	size = init_size;
-	arr = new int[init_size];
+	size = capacity = init_size;
+	arr = new int[size];
 }
 
 Vector::Vector(size_t init_size, int init_val) {
-	size = init_size;
-	arr = new int[init_size];
+	size = capacity = init_size;
+	arr = new int[size];
 
 	for (size_t i {}; i < size; i++) {
 		arr[i] = init_val;
@@ -46,7 +46,8 @@ int& Vector::at(size_t idx) {
 }
 
 void Vector::resize() {
-	int* new_arr = new int[size * 2];
+	capacity *= 2;
+	int* new_arr = new int[capacity];
 		
 	for (size_t i {}; i < size; i++) {
 		new_arr[i] = arr[i];
@@ -54,13 +55,30 @@ void Vector::resize() {
 
 	delete[] arr;
 	arr = new_arr;
-	size *= 2;
 }
 
 void Vector::print() {
+	if (size == 0) { 
+		std::cout << "[]" << std::endl;
+		return;
+	}
+	
 	std::cout << '[';
 	for (size_t i {}; i < size - 1; i++) {
 		std::cout << arr[i] << ", ";
 	}
 	std::cout << arr[size - 1] << ']' << std::endl;
 }
+
+void Vector::push_back(int val) {
+	if (size == capacity) { 
+		resize();
+		arr[size] = val;
+	}
+	else {
+		arr[size] = val;
+	}
+	
+	size += 1;
+}
+
