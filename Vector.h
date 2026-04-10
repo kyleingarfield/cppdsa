@@ -4,22 +4,41 @@
 #include <stdexcept>
 #include <iostream>
 
-class Vector {
+class vector {
 private:
 	int* arr;
-	size_t size, capacity;
+	size_t size_, capacity_;
+	void grow();
 public:
-	Vector();
-	Vector(size_t init_size);
-	Vector(size_t init_size, int init_val);
-	Vector(std::initializer_list<int> list);
-	~Vector();
-	
-	int& operator[](size_t idx);
+	// Constructors & Destructor
+	vector();
+	vector(size_t init_size);
+	vector(size_t init_size, int init_value);
+	vector(std::initializer_list<int> list);
+	~vector();
+
+	// Element Access
 	int& at(size_t idx);
-	void resize();
+	int& operator[](size_t idx);
+	int& front();
+	int& back();
+
+	// Capacity
+	bool empty() const;
+	size_t size() const;
+	void reserve(size_t new_cap);
+	size_t capacity() const;
+
+	// Modifiers
+	void clear();
+	void insert(size_t pos, int value);
+	void erase(size_t pos);
+	void resize(size_t new_size);
+	void push_back(int value);
+	void pop_back();
+
+	// Additional
 	void print();
-	void push_back(int val);
 };
 
 #endif

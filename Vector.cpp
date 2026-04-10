@@ -1,55 +1,87 @@
-#include "Vector.h"
+#include "vector.h"
+//private
+void vector::grow() {
+        capacity_ *= 2;
+        int* new_arr = new int[capacity_];
 
-Vector::Vector() {
-	size, capacity = 0;
+        for (size_t i {}; i < size_; i++) {
+                new_arr[i] = arr[i];
+        }
+
+        delete[] arr;
+        arr = new_arr;
+}
+
+//public
+// Constructors & Destructor
+vector::vector() {
+	size_ = capacity_ = 0;
 	arr = nullptr;
 }
 
-Vector::Vector(size_t init_size) {
-	size = capacity = init_size;
-	arr = new int[size];
+vector::vector(size_t init_size) {
+	size_ = capacity_ = init_size;
+	arr = new int[size_];
 }
 
-Vector::Vector(size_t init_size, int init_val) {
-	size = capacity = init_size;
-	arr = new int[size];
+vector::vector(size_t init_size, int init_value) {
+	size_ = capacity_ = init_size;
+	arr = new int[size_];
 
-	for (size_t i {}; i < size; i++) {
-		arr[i] = init_val;
+	for (size_t i {}; i < size_; i++) {
+		arr[i] = init_value;
 	}
 }
 
-Vector::Vector(std::initializer_list<int> list) {
-	size = list.size();
-	arr = new int[size];
+vector::vector(std::initializer_list<int> list) {
+	size_ = list.size();
+	arr = new int[size_];
 
-	for (size_t i {}; i < size; i++) {
+	for (size_t i {}; i < size_; i++) {
 		arr[i] = *(list.begin() + i);
 	}
 }
 
-Vector::~Vector() {
+vector::~vector() {
 	delete[] arr;
 }
 
-int& Vector::operator[](size_t idx) {
-	return arr[idx];
-}
+// Element Access
+int& vector::at(size_t idx) {
+        if (idx < 0 || idx > size_ - 1) {
+                throw std::out_of_range("index out of range");
+        }
 
-int& Vector::at(size_t idx) {
-	if (idx < 0 || idx > size - 1) {
-		throw std::out_of_range("index out of range");
-	}
-
-	return arr[idx];
+        return arr[idx];
 
 }
 
-void Vector::resize() {
-	capacity *= 2;
-	int* new_arr = new int[capacity];
-		
-	for (size_t i {}; i < size; i++) {
+int& vector::operator[](size_t idx) {
+	return arr[idx];
+}
+
+int& vector::front() {
+	return arr[0];
+}
+
+int& vector::back() {
+	return arr[size_ - 1];
+}
+
+// Capacity
+bool vector::empty() const {
+	return size_ == 0;
+}
+
+size_t vector::size() const {
+	return size_;
+}
+
+void vector::reserve(size_t new_cap) {
+	capacity_ = new_cap;
+       	int* new_arr = new int[capacity_];
+
+	for (size_t i {}; i < size_; i++) {
 		new_arr[i] = arr[i];
 	}
 
@@ -57,28 +89,64 @@ void Vector::resize() {
 	arr = new_arr;
 }
 
-void Vector::print() {
-	if (size == 0) { 
-		std::cout << "[]" << std::endl;
-		return;
-	}
-	
-	std::cout << '[';
-	for (size_t i {}; i < size - 1; i++) {
-		std::cout << arr[i] << ", ";
-	}
-	std::cout << arr[size - 1] << ']' << std::endl;
+
+// Modifiers
+
+void vector::clear() {
+	return;
 }
 
-void Vector::push_back(int val) {
-	if (size == capacity) { 
-		resize();
-		arr[size] = val;
+void vector::insert(size_t pos, int value) {
+	return;
+}
+
+void vector::erase(size_t pos){
+	return;
+}
+
+void vector::resize(size_t new_size) {
+	if (size_ == new_size) { return; }
+	
+	size_ = capacity_ = new_size;
+
+	int* new_arr = new int[size_];
+		
+	for (size_t i {}; i < size_; i++) {
+		new_arr[i] = arr[i];
+	}
+
+	delete[] arr;
+	arr = new_arr;
+}
+
+void vector::push_back(int value) {
+	if (size_ == capacity_) { 
+		grow();
+		arr[size_] = value;
 	}
 	else {
-		arr[size] = val;
+		arr[size_] = value;
 	}
 	
-	size += 1;
+	size_ += 1;
+}
+
+void vector::pop_back() {
+	// undefined behavior if size == 0, changed in C++26 see cppref
+	size_ -= 1;
+}
+
+// Additional
+void vector::print() {
+        if (size_ == 0) {
+                std::cout << "[]" << std::endl;
+                return;
+        }
+
+        std::cout << '[';
+        for (size_t i {}; i < size_ - 1; i++) {
+                std::cout << arr[i] << ", ";
+        }
+        std::cout << arr[size_ - 1] << ']' << std::endl;
 }
 
